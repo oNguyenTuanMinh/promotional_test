@@ -10,7 +10,7 @@ class Checkout
 
   def total
     @rules.inject(total_before_discount) do |final, rule|
-      final.round(2) - rule.(total_before_discount: total_before_discount)
+      final.round(2) - rule.(total_before_discount: total_before_discount, basket: @basket)
     end
   end
 
