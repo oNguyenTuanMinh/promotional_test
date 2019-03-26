@@ -30,7 +30,7 @@ describe "logivan_test" do
         expect(checkout.total).to equal(54.0)
       end
 
-      it "should not discount 10% if total price is over 59.99" do
+      it "should not discount 10% if total price is less than 60" do
         checkout = Checkout.new([percentage_discount])
         checkout.scan(Product.new("001", "Test Product 001", 20.00))
         checkout.scan(Product.new("002", "Test Product 002", 39.99))
