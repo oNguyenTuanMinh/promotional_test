@@ -1,11 +1,9 @@
 class PromotialRule
-  def discount(setting)
-    Proc.new do |args|
-      if args[:total_before_discount] >= setting[:minimum]
-        args[:total_before_discount] * setting[:percent] / 100
-      else
-        0
-      end
+  # if sum over minimum, discount by percent
+  def percentage_discount(setting)
+    lambda do |args|
+      return 0 if args[:total_before_discount] < setting[:minimum]
+      args[:total_before_discount] * setting[:percent] / 100.00
     end
   end
 end

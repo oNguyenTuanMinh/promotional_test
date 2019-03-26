@@ -1,27 +1,22 @@
 class Checkout
-  def initialize(promotial_rules)
+  def initialize(promotional_rules)
     @basket = []
-    @price = 0
-    @rules = promotial_rules
+    @rules = promotional_rules
   end
 
-  def scan(item)
-    @basket << item
+  def scan(product)
+    @basket << product
   end
 
   def total
-    total = total_before_discount
-    @rules.each do |rule|
-      total = total - rule.call(total_before_discount: total_before_discount)
+    @rules.inject(total_before_discount) do |final, rule|
+      final.round(2) - rule.(total_before_discount: total_before_discount)
     end
-    total
   end
 
+  private
+
   def total_before_discount
-    sum = 0
-    @basket.each do |item|
-      sum = sum + item.price
-    end
-    sum
+    @basket.inject(0) { |sum, product| sum + product.price }
   end
 end
