@@ -1,4 +1,19 @@
 class PromotialRule
+  attr_reader :math, :apply_last
+
+  def initialize(setting)
+    @setting = setting
+    @math = if @setting[:code]
+              @apply_last = 0
+              item_discount(@setting)
+            else
+              @apply_last = 1
+              percentage_discount(@setting)
+            end
+  end
+
+  private
+
   # if sum over minimum, discount by percent
   # setting[:minimum]
   # setting[:percent]
