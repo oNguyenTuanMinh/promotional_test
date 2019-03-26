@@ -5,10 +5,10 @@ class PromotialRule
     @setting = setting
     @math = if @setting[:code]
               @apply_last = 0
-              item_discount(@setting)
+              item_discount
             else
               @apply_last = 1
-              percentage_discount(@setting)
+              percentage_discount
             end
   end
 
@@ -17,10 +17,10 @@ class PromotialRule
   # if sum over minimum, discount by percent
   # setting[:minimum]
   # setting[:percent]
-  def percentage_discount(setting)
+  def percentage_discount
     lambda do |args|
-      return 0 if args[:total_before_discount] < setting[:minimum]
-      args[:total_before_discount] * setting[:percent] / 100.00
+      return 0 if args[:total_before_discount] < @setting[:minimum]
+      args[:total_before_discount] * @setting[:percent] / 100.00
     end
   end
 
@@ -28,13 +28,13 @@ class PromotialRule
   # setting[:code]
   # setting[:minimum]
   # setting[:discount_price]
-  def item_discount(setting)
+  def item_discount
     lambda do |args|
       target_products = args[:basket].select do |product|
-        product.code == setting[:code]
+        product.code == @setting[:code]
       end
-      return 0 if target_products.count < setting[:minimum]
-      target_products.count * (target_products[0].price - setting[:discount_price])
+      return 0 if target_products.count < @setting[:minimum]
+      target_products.count * (target_products[0].price - @setting[:discount_price])
     end
   end
 end
