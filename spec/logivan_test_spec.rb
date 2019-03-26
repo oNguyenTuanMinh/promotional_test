@@ -22,6 +22,20 @@ describe "logivan_test" do
       expect(checkout.total).to equal(90.0)
     end
 
+    it "should discount 10% if total price is exactly 60" do
+      checkout = Checkout.new([percentage_discount])
+      checkout.scan(Product.new("001", "Lavender heart", 20.00))
+      checkout.scan(Product.new("002", "Personalised cufflinks", 40.00))
+      expect(checkout.total).to equal(54.0)
+    end
+
+    it "should not discount 10% if total price is over 59.9" do
+      checkout = Checkout.new([percentage_discount])
+      checkout.scan(Product.new("001", "Lavender heart", 20.00))
+      checkout.scan(Product.new("002", "Personalised cufflinks", 30.00))
+      expect(checkout.total).to equal(50.0)
+    end
+
     it "should use 15.00 as normal when there is one '001' product" do
       checkout = Checkout.new([item_discount])
       checkout.scan(Product.new("001", "Lavender heart", 15.00))
